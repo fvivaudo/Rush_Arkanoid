@@ -6,7 +6,7 @@
 #    By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/01/31 16:58:29 by cchauvie          #+#    #+#              #
-#    Updated: 2015/05/02 14:10:26 by cchauvie         ###   ########.fr        #
+#    Updated: 2015/05/02 19:24:48 by cchauvie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ endif
 ############################################
 
 NAME1 = arkanoid
-SRCS1 = main.c
+SRCS1 = main.c window.c game.c
 SRCSDIR1 = $(CPATH)
 HFILES1 = $(HPATH)
 OBJSDIR1 = $(patsubst $(CPATH)%, $(OPATH)%, $(SRCSDIR1))
