@@ -6,7 +6,7 @@
 #    By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/01/31 16:58:29 by cchauvie          #+#    #+#              #
-#    Updated: 2015/05/02 12:21:28 by cchauvie         ###   ########.fr        #
+#    Updated: 2015/05/02 12:29:17 by cchauvie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,10 +68,13 @@ LIB_NAME: $(LIBPATH)/$(HPATH)
 	@make -C $(LIBPATH)
 
 GLFW_NAME:
+	@git submodule init
 	@git submodule update
 	@if [ ! -f $(GLFW_NAME) ]; then \
-		@cd $(GLFWPATH) && cmake . ; \
-		@make -C $(GLFWPATH) ; \
+		pushd $(GLFWPATH) ; \
+		cmake . ; \
+		popd ; \
+		make -C $(GLFWPATH) ; \
 	fi
 
 ###########
