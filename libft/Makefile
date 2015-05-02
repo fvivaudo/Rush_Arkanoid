@@ -6,7 +6,7 @@
 #    By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/19 10:57:42 by cchauvie          #+#    #+#              #
-#    Updated: 2015/04/09 13:41:52 by cchauvie         ###   ########.fr        #
+#    Updated: 2015/05/02 12:39:09 by cchauvie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ $(OPATH)/%.o: $(SPATH)/%.c
 		fi
 	@test -f $(PFILE) || (echo 0 > $(PFILE))
 	@echo $$(($$(cat $(PFILE)) + 1)) > $(PFILE)
-	@printf "\r\033[33m[$(NAME) : Compiling $(^)]\033[0m %3s%%" $$(($$(cat $(PFILE)) * 100 / $$(cat $(CFILE)))) $(COMMENT2)
+	@printf "\r\033[2K\033[33m[$(NAME) : Compiling $(^)]\033[0m %3s%%" $$(($$(cat $(PFILE)) * 100 / $$(cat $(CFILE)))) $(COMMENT2)
 	@mkdir -p $(@D)
 	$(COMMENT)$(CC) $(CCFLAGS) -c $(^) -o $(@)
 
