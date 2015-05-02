@@ -6,7 +6,7 @@
 /*   By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/02 19:20:33 by cchauvie          #+#    #+#             */
-/*   Updated: 2015/05/02 20:51:05 by cchauvie         ###   ########.fr       */
+/*   Updated: 2015/05/02 20:55:08 by cchauvie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	key_callback(GLFWwindow *window,
 		else if (key == GLFW_KEY_SPACE)
 			;
 		else if (key == GLFW_KEY_RIGHT && g_game.bar_position <= 1.0)
-			printf("p = %f\n", g_game.bar_position);
+			g_game.bar_position += 0.03;
 		else if (key == GLFW_KEY_LEFT && g_game.bar_position >= -1.0)
 			g_game.bar_position -= 0.03;
 	}
