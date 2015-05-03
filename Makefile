@@ -6,7 +6,7 @@
 #    By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/01/31 16:58:29 by cchauvie          #+#    #+#              #
-#    Updated: 2015/05/02 19:24:48 by cchauvie         ###   ########.fr        #
+#    Updated: 2015/05/03 22:50:31 by cchauvie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,11 @@ GLFW_NAME = $(GLFWPATH)/src/libglfw3.a
 ############################################
 
 LD = gcc
-LDFLAGS = -lc -L $(LIBPATH) -L $(GLFWPATH) -framework AGL -framework Cocoa -framework OpenGL -framework IOKit -framework CoreFoundation -framework CoreVideo
+LDFLAGS = -lc -L $(LIBPATH) -L $(GLFWPATH) -framework AGL -framework Cocoa -framework OpenGL -framework IOKit -framework CoreFoundation -framework CoreVideo -framework GLUT
 
 CC = $(LD)
 CCFLAGS = -I $(HPATH)/ -I $(LIBPATH)/$(HPATH) -I $(GLFWPATH)/include
-CCFLAGS += -Wall -Wextra -Werror
+CCFLAGS += -Wall -Wextra -Werror -Wno-deprecated
 
 ifeq ($(CC_CONFIG), debug)
 	CCFLAGS += -Wno-conversion -Wshadow -fno-builtin -nostdlib -fno-stack-protector -g
@@ -50,7 +50,7 @@ endif
 ############################################
 
 NAME1 = arkanoid
-SRCS1 = main.c window.c game.c
+SRCS1 = main.c loadmap.c window.c game.c math.c draw.c
 SRCSDIR1 = $(CPATH)
 HFILES1 = $(HPATH)
 OBJSDIR1 = $(patsubst $(CPATH)%, $(OPATH)%, $(SRCSDIR1))
