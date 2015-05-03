@@ -21,11 +21,12 @@
  */
 
 # define WINDOW_NAME "Super Arkanoid"
-# define DEFAULT_WIDTH (640)
+# define DEFAULT_WIDTH (480)
 # define DEFAULT_HEIGHT (480)
 # define MAP_WIDTH (12)
 # define MAP_HEIGHT (20)
-
+# define BRICK_WIDTH (0.15)
+# define BRICK_HEIGHT (0.1)
 /*
  ** Global Game stuct variables
  */
@@ -33,6 +34,8 @@
 typedef struct	s_game
 {
 	int		level;
+	bool	pause;
+	int		**map;
 	double	bar_position;
 	double	speed;
 
@@ -54,7 +57,7 @@ int		init_game(void);
 ** game.c
 */
 
-void	build_map(char *name);
+void	update_map(char *name);
 void	drawball(void);
 
 #endif

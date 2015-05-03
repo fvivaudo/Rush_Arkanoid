@@ -14,25 +14,27 @@
 #include <GLFW/glfw3.h>
 #include <fcntl.h>
 #include <math.h>
+#include <stdio.h>
+#include <unistd.h>
 
 static void	brick(GLfloat x, GLfloat y)
 {
 	glBegin(GL_QUADS);
 	glColor3f(2.f, 0.f, 0.f);
-	glVertex2f(-1.f + x * 0.15, 1.f - y * 0.1);
+	glVertex2f(-1.f + y * BRICK_WIDTH, 1.f - x * BRICK_HEIGHT);
 	glColor3f(0.f, 1.f, 0.f);
-	glVertex2f(-0.85f + x * 0.15, 1.f - y * 0.1);
+	glVertex2f(-0.85f + y * BRICK_WIDTH, 1.f - x * BRICK_HEIGHT);
 	glColor3f(0.f, 0.f, 1.f);
-	glVertex2f(-0.85f + x * 0.15, 0.9f - y * 0.1);
+	glVertex2f(-0.85f + y * BRICK_WIDTH, 0.9f - x * BRICK_HEIGHT);
 	glColor3f(0.f, 0.f, 1.f);
-	glVertex2f(-1.f + x * 0.15, 0.9f - y * 0.1);
+	glVertex2f(-1.f + y * BRICK_WIDTH, 0.9f - x * BRICK_HEIGHT);
 	glEnd();
 }
 
 static char	**get_map(char *name)
 {
-	char		*buf;
 	char		**map;
+	char		*buf;
 	int			fd;
 	int			y;
 
@@ -51,34 +53,35 @@ static char	**get_map(char *name)
 		free(buf);
 	}
 	map[y] = NULL;
+	close(fd);
 	return (map);
 }
-
-void		build_map(char *name)
+char	**build_map(char **tmp_map)
 {
-	static char	**map = NULL;
 	int			i;
 	int			y;
 	int			z;
+	//char		**tmp_map;
 
-	if (!map)
-		map = get_map(name);
 	i = 0;
 	y = 0;
 	z = 0;
-	while (map[y])
+	while (tmp_map[y])
 	{
-		while (map[y][z])
+		while (tmp_map[y][z])
 		{
-			if (ft_isdigit(map[y][z]) && ft_atoi(map[y] + z) != 0)
-				brick(i, y);
-			while (ft_isdigit(map[y][z]))
+			if (ft_isdigit(tmp_map[y][z]))
+			{
+				g_game.map[y][i] = ft_atoi(tmp_map[y] + z);
+			}
+			while (ft_isdigit(tmp_map[y][z]))
 				++z;
 			++i;
 			++z;
 		}
 		if (i != MAP_WIDTH)
 		{
+			ft_putnbr(i);
 			ft_dprintf(2, "ERROR : Map file content width must be = %d\n", MAP_WIDTH);
 			exit(EXIT_FAILURE);
 		}
@@ -86,33 +89,118 @@ void		build_map(char *name)
 		i = 0;
 		++y;
 	}
+
+
+
+
+
+
+
 	if (y != MAP_HEIGHT)
 	{
+		ft_putnbr(y);
 		ft_dprintf(2, "ERROR : Map file content height must be = %d\n", MAP_HEIGHT);
 		exit(EXIT_FAILURE);
 	}
+
+	return (tmp_map);
 }
+
+void		update_map(char *name)
+{
+	static char	**tmp_map= NULL;
+	int			i;
+	int			y;
+	//char		**tmp_map;
+	if (!tmp_map)
+	{
+		tmp_map = build_map(get_map(name));
+	}
+	i = 0;
+	y = 0;
+	while (i < MAP_HEIGHT)
+	{
+		while (y < MAP_WIDTH)
+		{
+			if (g_game.map[i][y] == 1)
+				brick(i, y);
+			++y;
+		}
+		y = 0;
+		++i;
+	}
+
+
+		i = 0;
+	y = 0;
+	while (i < MAP_HEIGHT)
+	{
+		while (y < MAP_WIDTH)
+		{
+			ft_putnbr(g_game.map[i][y]);
+			ft_putchar(' ');
+			++y;
+		}
+		ft_putchar('\n');
+		y = 0;
+		++i;
+	}
+}
+/*
+ ** Define new position of the ball
+ */
 
 void		drawball(void)
 {
-	float		x;
-	float		y;
+	int			x;
+	int			y;
 	float		angle;
-	double		radius;
+	double		rad;
 
 	angle = 0.0f;
-	radius = 0.02;
+	rad = 0.02;
 	glColor3f(1.0, 1.0, 0.6);
 	glBegin(GL_TRIANGLE_FAN);
-	glVertex2f(g_game.x, g_game.y);
+	glVertex2f(g_game.y, g_game.x);
 	while (angle < 2 * M_PI)
 	{
-		x = g_game.x + sin(angle) * radius;
-		y = g_game.y + cos(angle) * radius;
-		glVertex2f(x, y);
+		glVertex2f(g_game.y + sin(angle) * rad, g_game.x + cos(angle) * rad);
 		angle += 0.2;
 	}
-	g_game.x += 0.001;
-	g_game.y += 0.001;
-	glEnd();
+/*
+ ** colision and speed increase
+ */
+
+ x = fabs(g_game.x / BRICK_HEIGHT - 10);
+ y = g_game.y / BRICK_WIDTH + 6;
+
+ printf("try = %d, %d\n", x, y);
+
+ //printf("pos = %.0f, %.0f\n",  fabs(g_game.x / BRICK_HEIGHT - 10), g_game.y / BRICK_WIDTH + 6);
+	if ((g_game.x + g_game.x_dir) >= 1 || (g_game.x + g_game.x_dir) <= -1 || g_game.map[x][y] == 1)
+	{
+		if (g_game.x_dir < 0.04 && g_game.x_dir > -0.04)
+			g_game.x_dir *= -1.05;
+		else
+			g_game.x_dir *= -1;
+	}
+	if ((g_game.y + g_game.y_dir) >= 1 || (g_game.y + g_game.y_dir) <= -1)
+	{
+		if (g_game.y_dir < 0.04 && g_game.y_dir > -0.04 )
+			g_game.y_dir *= -1.05;
+		else
+			g_game.y_dir *= -1;
+	}
+	if (g_game.map[x][y] == 1)
+	{
+
+		g_game.map[x][y] = 0;
+	}
+/*
+ ** update pos
+ */
+	g_game.x += g_game.x_dir;
+	g_game.y += g_game.y_dir;
+ //printf("newpos = %.0f, %.0f\n",  fabs(g_game.x / BRICK_HEIGHT - 10), g_game.y / BRICK_WIDTH + 6);
+ 	glEnd();
 }
