@@ -6,7 +6,7 @@
 /*   By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/02 12:23:41 by cchauvie          #+#    #+#             */
-/*   Updated: 2015/05/03 22:52:21 by cchauvie         ###   ########.fr       */
+/*   Updated: 2015/05/03 23:31:02 by cchauvie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct	s_game
 	int		start_level;
 	bool	start;
 	bool	pause;
-	bool	win;
+	bool	stop;
 	double	bar_position;
 	double	x;
 	double	y;
@@ -85,10 +85,21 @@ void			update_map(char *name);
 ** draw.c
 */
 
+void			draw_all(void);
 void			draw_brick(float x, float y, int type);
 void			draw_infos(void);
 void			draw_bar(void);
 void			draw_ball(void);
+
+/*
+** verifs.c
+*/
+
+void			if_die(void);
+void			gen_ball(void);
+void			check_collide(int *x, int *y, int *collide);
+void			check_bit(int collide);
+void			check_bar(void);
 
 /*
 ** math.c

@@ -6,7 +6,7 @@
 /*   By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/02 19:20:33 by cchauvie          #+#    #+#             */
-/*   Updated: 2015/05/03 22:48:29 by cchauvie         ###   ########.fr       */
+/*   Updated: 2015/05/03 23:04:10 by cchauvie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,10 @@ static void	run_game(GLFWwindow *window)
 {
 	while (!glfwWindowShouldClose(window))
 	{
-		if (!g_game.win && !g_game.pause)
+		if (!g_game.stop && !g_game.pause)
 		{
 			glClear(GL_COLOR_BUFFER_BIT);
-			update_map(ft_strjoin("levels/level",
-						ft_strjoin(ft_itoa(g_game.level), ".txt")));
-			draw_infos();
-			draw_bar();
-			draw_ball();
+			draw_all();
 			if (!g_game.start)
 				print_text(-0.2, -0.2, "Press start to continue ...", 0);
 			if (g_game.target_score == 0)
@@ -79,10 +75,13 @@ static void	run_game(GLFWwindow *window)
 				check_map_file(ft_strjoin("levels/level",
 							ft_strjoin(ft_itoa(g_game.level), ".txt")));
 			}
+			glfwSwapBuffers(window);
 		}
-		else if (!g_game.win)
+		else if (!g_game.stop)
+		{
 			print_text(-0.08, 0, "PAUSED", 1);
-		glfwSwapBuffers(window);
+			glfwSwapBuffers(window);
+		}
 		glfwPollEvents();
 	}
 }

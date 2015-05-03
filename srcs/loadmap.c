@@ -6,7 +6,7 @@
 /*   By: cchauvie <cchauvie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/03 22:33:36 by cchauvie          #+#    #+#             */
-/*   Updated: 2015/05/03 22:47:37 by cchauvie         ###   ########.fr       */
+/*   Updated: 2015/05/03 23:00:01 by cchauvie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		check_map_file(char *filename)
 		{
 			print_text(-0.08, 0, "YOU WIN !!", 1);
 			draw_infos();
-			g_game.win = 1;
+			g_game.stop = 1;
 			return ;
 		}
 		else
